@@ -36,6 +36,13 @@ class BaseTask:
         self.builder = backend.get_builder(preprocessor=preprocessor,
                                            base_image=base_docker_image,
                                            registry=self.docker_registry)
+        #rainer
+        from fairing.builders.append.append import AppendBuilder
+
+        self.builder = AppendBuilder(preprocessor=preprocessor,
+                                 base_image=base_docker_image,
+                                 registry=self.docker_registry)
+        #end
         logger.warn("Using builder: {}".format(type(self.builder)))
 
     def _build(self):
