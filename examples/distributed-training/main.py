@@ -20,6 +20,9 @@ naming summary tags so that they are grouped meaningfully in TensorBoard.
 
 It demonstrates the functionality of every TensorBoard dashboard.
 """
+import sys
+sys.path.insert(0,"/home/jovyan/fairing")
+print(sys.path)
 
 import argparse
 import os
@@ -230,6 +233,9 @@ class TensorflowModel(object):
 
 
 if __name__ == '__main__':
-    fairing.config.set_builder(name='docker', registry='gcr.io/mrick-gcp', base_image='tensorflow/tensorflow')
-    fairing.config.set_deployer(name='tfjob', namespace='default', worker_count=1, ps_count=1)
+    #fairing.config.set_builder(name='docker', registry='gcr.io/mrick-gcp', base_image='tensorflow/tensorflow')
+    #fairing.config.set_builder(name='append', registry='index.docker.io/m1st3rb3an', base_image='tensorflow/tensorflow')
+    fairing.config.set_builder(name='cluster', registry='index.docker.io/m1st3rb3an', base_image='tensorflow/tensorflow')
+    #fairing.config.set_deployer(name='tfjob', namespace='kubeflow', worker_count=1, ps_count=1)
+    fairing.config.set_deployer(name='tfjob')
     fairing.config.run()

@@ -18,9 +18,13 @@ import numpy as np
 
 MODEL_FILE = 'trained_ames_model.dat'
 
-fairing.config.set_builder('docker',
-  registry='gcr.io/mrick-gcp',
-  base_image="seldonio/seldon-core-s2i-python3:0.4")
+import sys
+sys.path.insert(0,"/home/jovyan/fairing")
+print(sys.path)
+
+#fairing.config.set_builder('docker', registry='index.docker.io/m1st3rb3an', base_image="seldonio/seldon-core-s2i-python3:0.4")
+#fairing.config.set_builder('append', registry='index.docker.io/m1st3rb3an', base_image="seldonio/seldon-core-s2i-python3:0.4")
+fairing.config.set_builder('cluster', registry='index.docker.io/m1st3rb3an', base_image="seldonio/seldon-core-s2i-python3:0.4")
 
 fairing.config.set_deployer('serving', serving_class="HousingServe")
 

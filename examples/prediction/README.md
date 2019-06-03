@@ -1,7 +1,7 @@
 ### Train locally
 
 ```
-python HousingTrain.py --model-file=trained_ames_model.dat --train-input=ames_dataset/train.csv
+python3 HousingTrain.py --model-file=trained_ames_model.dat --train-input=ames_dataset/train.csv
 ```
 
 ### Serve on Kubernetes
