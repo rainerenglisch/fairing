@@ -23,7 +23,10 @@ class Serving(Job):
     # a port. But this breaks the post submit test
     # https://github.com/kubeflow/fairing/blob/master/examples/prediction/xgboost-high-level-apis.ipynb
     def __init__(self, serving_class, namespace=None, runs=1, labels=None,
-                 service_type="LoadBalancer"):
+                 #rainer_start
+                 #service_type="LoadBalancer"):
+                 service_type="ClusterIP"):
+                 #rainer_end
         super(Serving, self).__init__(namespace, runs, deployer_type=DEPLOPYER_TYPE, labels=labels)
         self.serving_class = serving_class
         self.service_type = service_type
@@ -47,6 +50,9 @@ class Serving(Job):
         apps_v1 = k8s_client.AppsV1Api()
         self.deployment = apps_v1.create_namespaced_deployment(self.namespace, self.deployment_spec)
         self.service = v1_api.create_namespaced_service(self.namespace, self.service_spec)
+        #rainer_start
+        logging.info("service specification: {}".format(self.service))
+        #rainer_end
 
         if self.service_type == "LoadBalancer":
             url = self.backend.get_service_external_endpoint(
@@ -55,8 +61,11 @@ class Serving(Job):
         else:
             # TODO(jlewi): The suffix won't always be cluster.local since
             # its configurable. Is there a way to get it programmatically?
-            url = "http://{0}.{1}.svc.cluster.local".format(
-                self.service.metadata.name, self.service.metadata.namespace)
+            #rainer_start
+            #url = "http://{0}.{1}.svc.cluster.local".format(self.service.metadata.name, self.service.metadata.namespace)
+            
+            url = "http://{0}:{1}".format(self.service.spec.cluster_ip, self.service.spec.ports[0].port)
+            #rainer_end
 
         logging.info("Cluster endpoint: %s", url)
         return url

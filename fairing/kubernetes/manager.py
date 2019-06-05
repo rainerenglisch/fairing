@@ -65,16 +65,19 @@ class KubeManager(object):
         label_selector_str = ', '.join("{}={}".format(k, v) for (k, v) in selectors.items())
         v1 = client.CoreV1Api()
         w = watch.Watch()
-        print("Waiting for prediction endpoint to come up...")
+        logging.info("Waiting for prediction endpoint to come up...")
+        logging.info("Selector: {}".format(label_selector_str))
         try:
             for event in w.stream(v1.list_namespaced_service,
                                   namespace=namespace,
                                   label_selector=label_selector_str):
                 svc = event['object']
-                logger.debug("Event: %s %s",
+                logger.info("Event: %s %s",
                               event['type'],
                              event['object'])
                 ing = svc.status.load_balancer.ingress
+                logger.info("svc.status.load_balancer.ingress: {}".format(svc.status.load_balancer.ingress))
+                
                 if ing is not None and len(ing) > 0:
                     url = "http://{}:5000/predict".format(ing[0].ip or ing[0].hostname)
                     return url
