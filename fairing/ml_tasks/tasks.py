@@ -86,16 +86,19 @@ class PredictionEndpoint(BaseTask):
                 },
             }
         }
+        
         serialized_data = json.dumps(pdata)
-        url_prediction = self.url + "/predict"
+        
         #rainer_start
+        url_prediction = self.url + "/predict"
         logging.info("self.url: {}".format(url_prediction))
+        logging.info("pdata: {}".format(pdata))
         #logging.info("serialized data: {}".format(serialized_data))
         #r = requests.post(url_prediction, data={'json':serialized_data})
-        headers = {'content-type': 'application/json'}
-        r = requests.post(url_prediction, data={'json':serialized_data}, headers=headers,timeout=10)
+        #headers = {'content-type': 'application/json'}
+        r = requests.post(url_prediction, data={'json':serialized_data})#, headers=headers)
         #rainer_end
-        logger.warning(r.text)
+        logger.info("Response: {}".format(r.text))
         logging.info("PredictionEndpoint.predict_nparray: End")
 
     def delete(self):

@@ -1,9 +1,14 @@
+import logging
 import fairing
 import googleapiclient
 import httplib2
 from fairing.constants import constants
 
+logger = logging.getLogger(__name__)
+
 def configure_http_instance(http=None):
+       logger.info("Entering http_utils.py: configure_http_instance({})".format(http))
+
        if not http:
               http = httplib2.Http()
        
@@ -31,4 +36,5 @@ def configure_http_instance(http=None):
               return request_orig(*args, **kwargs)
 
        http.request = new_request
+       logger.info("End http_utils.py: configure_http_instance {}".format(http))
        return http
