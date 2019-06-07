@@ -92,7 +92,7 @@ class PredictionEndpoint(BaseTask):
         #rainer_start
         url_prediction = self.url + "/predict"
         logging.info("self.url: {}".format(url_prediction))
-        logging.info("pdata: {}".format(pdata))
+        #logging.info("pdata: {}".format(pdata))
         #logging.info("serialized data: {}".format(serialized_data))
         #r = requests.post(url_prediction, data={'json':serialized_data})
         #headers = {'content-type': 'application/json'}
