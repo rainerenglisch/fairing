@@ -25,7 +25,8 @@ class Serving(Job):
     def __init__(self, serving_class, namespace=None, runs=1, labels=None,
                  #rainer_start
                  #service_type="LoadBalancer"):
-                 service_type="ClusterIP"):
+                 #service_type="ClusterIP"):
+                 service_type="NodePort"):
                  #rainer_end
         super(Serving, self).__init__(namespace, runs, deployer_type=DEPLOPYER_TYPE, labels=labels)
         self.serving_class = serving_class
@@ -58,7 +59,8 @@ class Serving(Job):
             url = self.backend.get_service_external_endpoint(
                 self.service.metadata.name, self.service.metadata.namespace,
                 self.service.metadata.labels)
-        else:
+        #rainer start
+        elif self.service_type =="ClusterIP":
             # TODO(jlewi): The suffix won't always be cluster.local since
             # its configurable. Is there a way to get it programmatically?
             #rainer_start
@@ -66,8 +68,11 @@ class Serving(Job):
             
             url = "http://{0}:{1}".format(self.service.spec.cluster_ip, self.service.spec.ports[0].port)
             #rainer_end
-
+        else:
+            url = "http://{0}:{1}".format(self.service.spec.cluster_ip, self.service.spec.ports[0].port)
+            
         logging.info("Cluster endpoint: %s", url)
+        #rainer end
         return url
 
     def generate_deployment_spec(self, pod_template_spec):
