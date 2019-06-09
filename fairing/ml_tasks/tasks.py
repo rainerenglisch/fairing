@@ -97,9 +97,11 @@ class PredictionEndpoint(BaseTask):
         #r = requests.post(url_prediction, data={'json':serialized_data})
         #headers = {'content-type': 'application/json'}
         r = requests.post(url_prediction, data={'json':serialized_data})#, headers=headers)
-        #rainer_end
-        logger.info("Response: {}".format(r.text))
+        response = r.json()
+        #logger.info("Response: {}".format(response))
         logging.info("PredictionEndpoint.predict_nparray: End")
+        return r.json()
+        #rainer_end
 
     def delete(self):
         self._deployer.delete()
