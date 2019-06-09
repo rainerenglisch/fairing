@@ -79,6 +79,7 @@ class PredictionEndpoint(BaseTask):
         #rainer start
         import requests
         import json
+        import time
         logging.info("PredictionEndpoint.predict_nparray: Start")
         #rainer ende
         pdata={
@@ -100,7 +101,13 @@ class PredictionEndpoint(BaseTask):
         #logging.info("serialized data: {}".format(serialized_data))
         #r = requests.post(url_prediction, data={'json':serialized_data})
         #headers = {'content-type': 'application/json'}
-        r = requests.post(url_prediction, data={'json':serialized_data})#, headers=headers)
+        try:
+            r = requests.post(url_prediction, data={'json':serialized_data},timeout=1)#, headers=headers)
+        except Exception as e:
+            print(e)
+            time.sleep(1)
+            r = requests.post(url_prediction, data={'json':serialized_data})
+        
         response = r.json()
         #logger.info("Response: {}".format(response))
         logging.info("PredictionEndpoint.predict_nparray: End")
