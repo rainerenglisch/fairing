@@ -102,10 +102,10 @@ class PredictionEndpoint(BaseTask):
         #r = requests.post(url_prediction, data={'json':serialized_data})
         #headers = {'content-type': 'application/json'}
         try:
-            r = requests.post(url_prediction, data={'json':serialized_data},timeout=1)#, headers=headers)
+            r = requests.post(url_prediction, data={'json':serialized_data},timeout=0.1)#, headers=headers)
         except Exception as e:
             print(e)
-            time.sleep(1)
+            time.sleep(10)
             r = requests.post(url_prediction, data={'json':serialized_data})
         
         response = r.json()
