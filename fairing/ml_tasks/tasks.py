@@ -76,7 +76,11 @@ class PredictionEndpoint(BaseTask):
         logger.warning("Prediction endpoint: {}".format(self.url))
 
     def predict_nparray(self, data, feature_names=None):
+        #rainer start
+        import requests
+        import json
         logging.info("PredictionEndpoint.predict_nparray: Start")
+        #rainer ende
         pdata={
             "data": {
                 "names":feature_names,
